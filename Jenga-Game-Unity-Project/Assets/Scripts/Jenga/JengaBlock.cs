@@ -47,11 +47,9 @@ namespace JengaGame
 
         void OnMouseOver()
         {
-            if (Input.GetMouseButton(1))
+            if (Input.GetMouseButtonDown(1))
             {
                 OnRightClickedGlobal.Invoke(this);
-                Debug.Log(data.id);
-                // TODO: ui display showing info about this block
             }
         }
 
