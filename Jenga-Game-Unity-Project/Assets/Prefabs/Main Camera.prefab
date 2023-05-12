@@ -33,7 +33,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 15, y: 0, z: 0}
 --- !u!114 &-778762486934426250
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -46,6 +46,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da357546682e64a26a0e2cebcf339cc6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  orbitSensitivity: {x: 1, y: 1}
+  potentialTargets:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   target: {fileID: 0}
 --- !u!20 &4609436238187037679
 Camera:

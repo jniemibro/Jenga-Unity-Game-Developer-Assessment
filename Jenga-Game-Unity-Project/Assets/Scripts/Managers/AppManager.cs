@@ -37,9 +37,12 @@ namespace JengaGame
             }
         }
 
-        public void GenerateRequest()
+        public static void GenerateRequest()
         {
-            StartCoroutine(ProcessRequest(URL));
+            if (!instance)
+                return;
+                
+            instance.StartCoroutine(instance.ProcessRequest(URL));
         }
 
         public IEnumerator ProcessRequest(string url)
