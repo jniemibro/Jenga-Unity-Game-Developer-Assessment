@@ -15,6 +15,8 @@ namespace JengaGame
         private const string URL = "https://ga1vqcu3o1.execute-api.us-east-1.amazonaws.com/Assessment/stack";
         private const string GAME_SCENE = "Game";
 
+        private static bool isInitialized = false;
+
         void Awake()
         {
             instance = this;
@@ -36,6 +38,7 @@ namespace JengaGame
                 // proceed to gameplay scene after successfully loading data
                 if (SceneManager.GetActiveScene().name != GAME_SCENE)
                     SceneManager.LoadScene(GAME_SCENE);
+                isInitialized = true;
             }
         }
 
@@ -68,7 +71,15 @@ namespace JengaGame
 
         public static bool IsInitialized()
         {
-            return instance;
+            return instance && isInitialized;
+        }
+
+        public static JengaBlockData[] GetLoadedData()
+        {
+            if (instance)
+                return instance.data;
+            else
+                return new JengaBlockData[0];
         }
     }
 }

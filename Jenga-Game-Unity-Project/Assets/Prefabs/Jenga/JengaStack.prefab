@@ -45,7 +45,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ed44f4359a9840cda6faa66dd9882f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gradeLevel: 0
+  stackId: 6th Grade
+  prefabs: {fileID: 11400000, guid: 3e70127a035e14e0d88b5d8e2334ba7e, type: 2}
   gradeLabel: {fileID: 1150218033031763687}
 --- !u!1001 &6513746169524852231
 PrefabInstance:
@@ -57,6 +58,10 @@ PrefabInstance:
     - target: {fileID: 3353995172310130553, guid: 9fee643d0c6be45baaa78cb59cb5b6a5, type: 3}
       propertyPath: m_Name
       value: GradeLabel
+      objectReference: {fileID: 0}
+    - target: {fileID: 6166303744407126240, guid: 9fee643d0c6be45baaa78cb59cb5b6a5, type: 3}
+      propertyPath: m_text
+      value: '-'
       objectReference: {fileID: 0}
     - target: {fileID: 8030028356577141389, guid: 9fee643d0c6be45baaa78cb59cb5b6a5, type: 3}
       propertyPath: m_Pivot.x
