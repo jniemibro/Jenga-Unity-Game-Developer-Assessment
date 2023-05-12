@@ -1,6 +1,7 @@
 namespace JengaGame
 {
     using UnityEngine;
+    using System.Linq;
     using System.Collections;
     using System.Collections.Generic;
 
@@ -37,7 +38,15 @@ namespace JengaGame
 
         public void Initialize(JengaBlockData[] dataArray)
         {
-            StartCoroutine(InitializeRoutine(dataArray));
+            // sorting data by requirements
+            List<JengaBlockData> list = new List<JengaBlockData>(dataArray);
+            List<JengaBlockData> sortedList = list
+                .OrderBy(i => i.domain)
+                .ThenBy(i => i.cluster)
+                .ThenBy(i => i.standardid)
+                .ToList();
+
+            StartCoroutine(InitializeRoutine(sortedList.ToArray()));
             /*foreach (JengaBlockData data in dataArray)
             {
                 Debug.Log(data.grade);
