@@ -8,7 +8,9 @@ namespace JengaGame
     public class AppManager : MonoBehaviour
     {
         static AppManager instance;
-        string jsonData;
+        string jsonString;
+
+        [SerializeField] JengaBlockData[] data;
 
         private const string URL = "https://ga1vqcu3o1.execute-api.us-east-1.amazonaws.com/Assessment/stack";
         private const string GAME_SCENE = "Game";
@@ -24,7 +26,7 @@ namespace JengaGame
             yield return StartCoroutine(ProcessRequest(URL));
             // TODO: option to try again, or proceed if successful
 
-            if (string.IsNullOrEmpty(jsonData))
+            if (string.IsNullOrEmpty(jsonString))
             {
                 Debug.LogError("Failed to load data from, " + URL, this);
             }
@@ -41,7 +43,7 @@ namespace JengaGame
         {
             if (!instance)
                 return;
-                
+
             instance.StartCoroutine(instance.ProcessRequest(URL));
         }
 
@@ -56,8 +58,10 @@ namespace JengaGame
                 }
                 else
                 {
-                    jsonData = request.downloadHandler.text;
-                    Debug.Log(jsonData);
+                    jsonString = request.downloadHandler.text;
+                    jsonString = JsonHelper.FixJson(jsonString); 
+                    Debug.Log(jsonString, this);
+                    data = JsonHelper.FromJson<JengaBlockData>(jsonString);
                 }
             }
         }
