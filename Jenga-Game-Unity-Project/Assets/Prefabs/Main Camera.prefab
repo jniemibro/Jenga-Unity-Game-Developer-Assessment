@@ -46,6 +46,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da357546682e64a26a0e2cebcf339cc6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  targetOffset: {x: 0, y: 2.5, z: 0}
   orbitSensitivity: {x: 1, y: 1}
   potentialTargets:
   - {fileID: 0}
