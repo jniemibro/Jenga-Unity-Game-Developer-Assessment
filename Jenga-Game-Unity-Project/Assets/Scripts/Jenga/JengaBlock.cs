@@ -10,6 +10,8 @@ namespace JengaGame
         MeshRenderer _meshRenderer;
         Rigidbody _rigidbody;
 
+        const float PADDING = 0.1f;
+
         void Awake()
         {
             _meshRenderer = GetComponent<MeshRenderer>();
@@ -49,7 +51,7 @@ namespace JengaGame
         {
             if (!_meshRenderer)
                 _meshRenderer = GetComponent<MeshRenderer>();
-            return _meshRenderer.bounds.extents.x * 2;
+            return (_meshRenderer.bounds.extents.z * 2) + PADDING;
         }
 
         public MasteryType GetMasteryType()

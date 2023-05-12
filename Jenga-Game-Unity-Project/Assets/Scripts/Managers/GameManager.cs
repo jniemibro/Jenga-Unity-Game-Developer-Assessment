@@ -25,6 +25,13 @@ namespace JengaGame
         {
             while (!AppManager.IsInitialized())
                 yield return null;
+            Reset();
+        }
+
+        public void Reset()
+        {
+            foreach (JengaStack stack in stacks)
+                stack.Clear();
             Initialize(AppManager.GetLoadedData());
         }
 
@@ -60,6 +67,12 @@ namespace JengaGame
                     Debug.LogWarning(data.grade + " stack could not be found?");
                 yield return null;
             }
+        }
+
+        public void TestMyStack()
+        {
+            foreach (JengaStack stack in stacks)
+                stack.TestWithout(MasteryType.Glass);
         }
 
         void OnDestroy()

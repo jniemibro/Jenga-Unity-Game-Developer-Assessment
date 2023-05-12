@@ -9,8 +9,8 @@ namespace JengaGame
         [SerializeField] Vector2 orbitSensitivity = Vector2.one;
 
         [Space()]
-        [SerializeField] Transform[] potentialTargets;
-        [SerializeField] Transform target;
+        [SerializeField] JengaStack[] potentialTargets;
+        [SerializeField] JengaStack target;
     
         int currentTargetIndex = 0;
         float distance = 5f;
@@ -21,8 +21,6 @@ namespace JengaGame
         float sensitivity = 1000f;
         Vector3 targetPosition;
         Vector3 targetLookPoint;
-
-        public Transform Target { get { return target; } }
 
         void Awake()
         {
@@ -39,10 +37,10 @@ namespace JengaGame
             UpdateTarget(target);
         }
 
-        public void UpdateTarget(Transform newTarget)
+        public void UpdateTarget(JengaStack newTarget)
         {
-            targetLookPoint = target.position;
-            distance = Vector3.Distance(newTarget.position, transform.position);
+            targetLookPoint = target.Position;
+            distance = Vector3.Distance(newTarget.Position, transform.position);
             target = newTarget;
         }
 
@@ -58,9 +56,9 @@ namespace JengaGame
 
             
             // interpolate camera position
-            targetPosition = Vector3.Lerp(targetPosition, target.position + Quaternion.Euler(xRot, yRot, 0f) * (distance * -Vector3.back), 10 * Time.unscaledDeltaTime);
+            targetPosition = Vector3.Lerp(targetPosition, target.Position + Quaternion.Euler(xRot, yRot, 0f) * (distance * -Vector3.back), 10 * Time.unscaledDeltaTime);
             // interpolate look target point
-            targetLookPoint = Vector3.Lerp(targetLookPoint, target.position, 2 * Time.unscaledDeltaTime);
+            targetLookPoint = Vector3.Lerp(targetLookPoint, target.Position, 2 * Time.unscaledDeltaTime);
         }
     
         void LateUpdate()

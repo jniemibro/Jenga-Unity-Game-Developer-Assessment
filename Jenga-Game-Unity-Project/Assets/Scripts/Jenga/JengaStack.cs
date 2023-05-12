@@ -17,10 +17,19 @@ namespace JengaGame
         const int BLOCKS_PER_ROW = 3;
         //const string DISPLAY_FORMAT = "{0} Grade";
 
+        public Vector3 Position => GetMidPoint();
+        //public Vector3 Position => transform.position;
+
 
         void Start()
         {
             UpdateGradeLabelDisplay(stackId);
+        }
+
+        public void Clear()
+        {
+            for (int i=blocks.Count-1; i>=0; i--)
+                RemoveBlock(blocks[i]);
         }
 
         public void AddBlock(JengaBlockData newData)
@@ -35,12 +44,12 @@ namespace JengaGame
 
         public void RemoveBlock(JengaBlock block)
         {
-
+            blocks.Remove(block);
+            Destroy(block.gameObject);
         }
 
-        public void DisableMasteryTypes(MasteryType type)
+        public void TestWithout(MasteryType type)
         {
-            // TODO: disable blocks of a sepcific type
             for (int i=0; i<blocks.Count; i++)
             {
                 blocks[i].SetEnabled(blocks[i].GetMasteryType() != type);
@@ -83,19 +92,19 @@ namespace JengaGame
 
         Vector3 GetSpawnPosition()
         {
-            return transform.position + 
+            return transform.position - 
+                ((blocks.Count / BLOCKS_PER_ROW) % 2 == 0 ? Vector3.forward : Vector3.right) * (GetBlockWidth()) +
+                (Vector3.up * (GetBlockHeight() / 2.0f)) +
 
-                (((blocks.Count % BLOCKS_PER_ROW) % 2 == 0 ? Vector3.forward : Vector3.right) * 
+            (((blocks.Count / BLOCKS_PER_ROW) % 2 == 0 ? Vector3.forward : Vector3.right) *
                 GetBlockWidth() * (blocks.Count % BLOCKS_PER_ROW)) +
 
-                (Vector3.up * GetBlockHeight() * (blocks.Count / BLOCKS_PER_ROW));
+            (Vector3.up * GetBlockHeight() * (blocks.Count / BLOCKS_PER_ROW));
         }
 
         Quaternion GetSpawnRotation()
         {
-            return Quaternion.identity;
-
-            if (blocks.Count % BLOCKS_PER_ROW == 0)
+            if ((blocks.Count / BLOCKS_PER_ROW) % 2 == 0)
                 return Quaternion.identity;
             else
                 return Quaternion.Euler(0, 90, 0);
