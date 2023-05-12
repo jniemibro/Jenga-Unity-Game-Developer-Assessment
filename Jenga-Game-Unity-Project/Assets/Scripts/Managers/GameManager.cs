@@ -1,13 +1,19 @@
 namespace JengaGame
 {
     using UnityEngine;
+    using UnityEngine.Events;
     using System.Linq;
     using System.Collections;
     using System.Collections.Generic;
 
     public class GameManager : MonoBehaviour
     {
+        public static UnityEvent<JengaStack> OnCurrentStackChangedGlobal = new UnityEvent<JengaStack>();
+
         static GameManager instance;
+
+        [SerializeField] JengaStack currentStack;
+        int currentStackIndex = 1; // start with middle option
 
         JengaStack[] stacks;
         Dictionary<string, JengaStack> stackLookup = new Dictionary<string, JengaStack>();
@@ -20,6 +26,16 @@ namespace JengaGame
             stacks = Object.FindObjectsOfType<JengaStack>();
             foreach(JengaStack stack in stacks)
                 stackLookup.Add(stack.GetStackId(), stack);
+
+            // update starting potential target index to match assigned target in editor
+            for (int i=0; i<stacks.Length; i++)
+            {
+                if (stacks[i] == currentStack)
+                {
+                    currentStackIndex = i;
+                    break;
+                }
+            }
         }
 
         IEnumerator Start()
@@ -27,6 +43,15 @@ namespace JengaGame
             while (!AppManager.IsInitialized())
                 yield return null;
             Reset();
+            OnCurrentStackChangedGlobal.Invoke(currentStack);
+        }
+
+        void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
+                NextTarget();
+            else if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
+                PreviousTarget();
         }
 
         public void Reset()
@@ -78,10 +103,15 @@ namespace JengaGame
             }
         }
 
-        public void TestMyStack()
+
+        public void TestAllStacks()
         {
             foreach (JengaStack stack in stacks)
                 stack.TestWithout(MasteryType.Glass);
+        }
+        public void TestMyStack()
+        {
+            currentStack.TestWithout(MasteryType.Glass);
         }
 
         void OnDestroy()
@@ -89,9 +119,37 @@ namespace JengaGame
             instance = null;
         }
 
+        public static JengaStack GetCurrentStack()
+        {
+            if (instance)
+                return instance.currentStack;
+            else
+                return null;
+        }
+
         public static bool IsInitialized()
         {
             return instance;
+        }
+
+        void PreviousTarget()
+        {
+            currentStackIndex -= 1;
+            if (currentStackIndex < 0)
+                currentStackIndex = stacks.Length-1;
+
+            currentStack = stacks[currentStackIndex];
+            OnCurrentStackChangedGlobal.Invoke(currentStack);
+        }
+
+        void NextTarget()
+        {
+            currentStackIndex += 1;
+            if (currentStackIndex >= stacks.Length)
+                currentStackIndex = 0;
+
+            currentStack = stacks[currentStackIndex];
+            OnCurrentStackChangedGlobal.Invoke(currentStack);
         }
     }
 }
