@@ -10,7 +10,7 @@ namespace JengaGame
     {
         [SerializeField] TMP_Text blockInfoLabel;
 
-        const string BLOCK_INFO_FORMAT = "{0}: {1}\n{2}\n{3}: {4}";
+        const string BLOCK_INFO_FORMAT = "• {0}: {1}\n• {2}\n• {3}: {4}";
 
         void Awake()
         {

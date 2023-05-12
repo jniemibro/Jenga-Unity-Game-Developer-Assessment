@@ -84,7 +84,7 @@ namespace JengaGame
                 return;
 
             // only use mouse axis while left-click is held
-            if (Input.GetButton("Fire1"))
+            if (Input.GetMouseButton(0))
             {
                 xRot += Mathf.DeltaAngle(xRot, xRot - Input.GetAxis("Mouse Y") * sensitivity * Time.unscaledDeltaTime);
                 yRot += Mathf.DeltaAngle(yRot, yRot + Input.GetAxis("Mouse X") * sensitivity * Time.unscaledDeltaTime);
