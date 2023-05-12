@@ -68,8 +68,11 @@ namespace JengaGame
             if (!target)
                 return;
 
-            xRot += Mathf.DeltaAngle(xRot, xRot + Input.GetAxis("Mouse Y") * sensitivity * Time.unscaledDeltaTime);
-            yRot += Mathf.DeltaAngle(yRot, yRot + Input.GetAxis("Mouse X") * sensitivity * Time.unscaledDeltaTime);
+            if (Input.GetButton("Fire1"))
+            {
+                xRot += Mathf.DeltaAngle(xRot, xRot + Input.GetAxis("Mouse Y") * sensitivity * Time.unscaledDeltaTime);
+                yRot += Mathf.DeltaAngle(yRot, yRot + Input.GetAxis("Mouse X") * sensitivity * Time.unscaledDeltaTime);
+            }
     
             if(xRot > 89f)
             {
