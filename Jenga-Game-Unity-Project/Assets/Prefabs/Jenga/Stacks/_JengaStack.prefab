@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8460764818904790307}
   - component: {fileID: -7732242994465380634}
   m_Layer: 0
-  m_Name: JengaStack
+  m_Name: _JengaStack
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c450fa92ddb5148ab8ce4c5c99733e68, type: 3}
-  m_Name: Jenga Block Prefabs
+  m_Name: _Jenga Block Prefabs
   m_EditorClassIdentifier: 
   blockPrefabs:
   - {fileID: 1986541917889131168, guid: 96793522e892d4608818409848053358, type: 3}
