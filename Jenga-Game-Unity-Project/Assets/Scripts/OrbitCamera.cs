@@ -1,7 +1,5 @@
 namespace JengaGame
 {
-    using System.Collections;
-    using System.Collections.Generic;
     using UnityEngine;
 
     public class OrbitCamera : MonoBehaviour
@@ -10,11 +8,6 @@ namespace JengaGame
         [SerializeField] Vector2 orbitSensitivity = Vector2.one;
 
         JengaStack target;
-        /*[Space()]
-        [SerializeField] JengaStack[] potentialTargets;
-        [SerializeField] JengaStack target;
-    
-        int currentTargetIndex = 0;*/
 
         float xRot = 0f;
         float yRot = 0f;
@@ -29,23 +22,12 @@ namespace JengaGame
 
         void Awake()
         {
-            GameManager.OnCurrentStackChangedGlobal.AddListener(UpdateTarget);
             targetPosition = transform.position;
-            // update starting potential target index to match assigned target in editor
-            /*for (int i=0; i<potentialTargets.Length; i++)
-            {
-                if (potentialTargets[i] == target)
-                {
-                    currentTargetIndex = i;
-                    break;
-                }
-            }
-            UpdateTarget(target);*/
         }
 
         void OnDestroy()
         {
-            GameManager.OnCurrentStackChangedGlobal.RemoveListener(UpdateTarget);
+            
         }
 
         public void UpdateTarget(JengaStack newTarget)
@@ -60,14 +42,12 @@ namespace JengaGame
             if (!target)
                 return;
 
-            //xRot += Input.GetAxis("Mouse X");
-            //yRot += Input.GetAxis("Mouse Y");
-
-            /*if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
-                NextTarget();
-            else if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
-                PreviousTarget();*/
-
+            // only use mouse axis while left-click is held
+            if (Input.GetMouseButton(0))
+            {
+                xRot += Mathf.DeltaAngle(xRot, xRot - Input.GetAxis("Mouse Y") * sensitivity * Time.unscaledDeltaTime);
+                yRot += Mathf.DeltaAngle(yRot, yRot + Input.GetAxis("Mouse X") * sensitivity * Time.unscaledDeltaTime);
+            }
             
             // interpolate camera position
             targetPosition = Vector3.Lerp(targetPosition, 
@@ -82,13 +62,6 @@ namespace JengaGame
         {
             if (!target)
                 return;
-
-            // only use mouse axis while left-click is held
-            if (Input.GetMouseButton(0))
-            {
-                xRot += Mathf.DeltaAngle(xRot, xRot - Input.GetAxis("Mouse Y") * sensitivity * Time.unscaledDeltaTime);
-                yRot += Mathf.DeltaAngle(yRot, yRot + Input.GetAxis("Mouse X") * sensitivity * Time.unscaledDeltaTime);
-            }
     
             if(xRot > 89f)
             {
@@ -102,22 +75,5 @@ namespace JengaGame
             transform.position = targetPosition;
             transform.LookAt(targetLookPoint, Vector3.up);
         }
-
-        /*void LateUpdate()
-        {
-            if (!Target)
-                return;
-
-            transform.Translate(Vector3.right * -Input.GetAxis("Mouse X") * orbitSensitivity.x, Space.Self);
-            transform.Translate(Vector3.up * -Input.GetAxis("Mouse Y") * orbitSensitivity.y, Space.Self);
-            transform.LookAt(target);
-
-            Vector3 dir = target.position - transform.position;
-            dir = dir.normalized * distance;
-            transform.position = target.position - dir;
-            //transform.LookAt(Target);
-
-            // TODO: zooming based on obstructions?
-        }*/
     }
 }

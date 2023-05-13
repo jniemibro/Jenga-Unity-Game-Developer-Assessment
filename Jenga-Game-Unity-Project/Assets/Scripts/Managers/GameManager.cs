@@ -6,17 +6,25 @@ namespace JengaGame
     using System.Collections;
     using System.Collections.Generic;
 
+    // Non-persistent singleton
     public class GameManager : MonoBehaviour
     {
-        public static UnityEvent<JengaStack> OnCurrentStackChangedGlobal = new UnityEvent<JengaStack>();
-
         static GameManager instance;
 
+        [SerializeField] UnityEvent<JengaStack> OnCurrentStackChanged;
+        [SerializeField] UnityEvent<JengaBlock> OnCurrentBlockChanged;
+
+        [Space()]
+        RaycastHit raycastHit;
+        UIGame uiGame;
+        JengaBlock currentBlock;
         [SerializeField] JengaStack currentStack;
         int currentStackIndex = 1; // start with middle option
 
         JengaStack[] stacks;
         Dictionary<string, JengaStack> stackLookup = new Dictionary<string, JengaStack>();
+
+        const float MAX_RAY_DIST = float.MaxValue;
 
         void Awake()
         {
@@ -43,16 +51,39 @@ namespace JengaGame
             while (!AppManager.IsInitialized())
                 yield return null;
             Reset();
-            OnCurrentStackChangedGlobal.Invoke(currentStack);
+            OnCurrentStackChanged.Invoke(currentStack);
         }
 
         void Update()
         {
-            if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
+            if (Input.GetMouseButtonDown(1))
+                RaycastForBlockInfo();   
+            else if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
                 NextTarget();
             else if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
                 PreviousTarget();
         }
+
+        void RaycastForBlockInfo()
+        {
+            if (currentBlock)
+                currentBlock.SetHighlighted(false);
+
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            bool hasHit = Physics.Raycast(ray, out raycastHit, MAX_RAY_DIST);
+            if (hasHit)
+            {
+                //Debug.Log(raycastHit.collider.gameObject.name);
+                JengaBlock block = raycastHit.collider.GetComponent<JengaBlock>();
+                currentBlock = block;
+                if (currentBlock)
+                    currentBlock.SetHighlighted(true);
+            }
+            else
+                currentBlock = null;
+            OnCurrentBlockChanged.Invoke(currentBlock);
+        }
+
 
         public void Reset()
         {
@@ -139,7 +170,7 @@ namespace JengaGame
                 currentStackIndex = stacks.Length-1;
 
             currentStack = stacks[currentStackIndex];
-            OnCurrentStackChangedGlobal.Invoke(currentStack);
+            OnCurrentStackChanged.Invoke(currentStack);
         }
 
         void NextTarget()
@@ -149,7 +180,7 @@ namespace JengaGame
                 currentStackIndex = 0;
 
             currentStack = stacks[currentStackIndex];
-            OnCurrentStackChangedGlobal.Invoke(currentStack);
+            OnCurrentStackChanged.Invoke(currentStack);
         }
     }
 }

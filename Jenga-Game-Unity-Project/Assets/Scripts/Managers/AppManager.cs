@@ -5,6 +5,7 @@ namespace JengaGame
     using UnityEngine.Networking;
     using System.Collections;
 
+    // Persistent singleton
     public class AppManager : MonoBehaviour
     {
         static AppManager instance;

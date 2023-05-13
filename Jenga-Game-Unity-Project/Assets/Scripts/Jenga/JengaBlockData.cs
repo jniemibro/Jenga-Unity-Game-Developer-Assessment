@@ -5,7 +5,7 @@ namespace JengaGame
     {
         public JengaBlockData() {}
 
-        public int id; // identifies block
+        public int id;
         public string subject;
         public string grade; // identifies stack
         public int mastery; // identifies block prefab

@@ -5,8 +5,6 @@ namespace JengaGame
 
     public class JengaBlock : MonoBehaviour
     {
-        public static UnityEvent<JengaBlock> OnRightClickedGlobal = new UnityEvent<JengaBlock>();
-
         [SerializeField] MasteryType masteryType = MasteryType.Glass;
         JengaBlockData data;
         BoxCollider _boxCollider;
@@ -23,13 +21,11 @@ namespace JengaGame
             _sharedMaterial = _meshRenderer.sharedMaterial;
             _boxCollider = GetComponent<BoxCollider>();
             _rigidbody = GetComponent<Rigidbody>();
-
-            OnRightClickedGlobal.AddListener(OnJengaBlockRightClickedGlobal);
         }
 
         void OnDestroy()
         {
-            OnRightClickedGlobal.RemoveListener(OnJengaBlockRightClickedGlobal);
+            
         }
 
         public void SetData(JengaBlockData newData)
@@ -37,20 +33,12 @@ namespace JengaGame
             data = newData;
         }
 
-        void OnJengaBlockRightClickedGlobal(JengaBlock block)
+        public void SetHighlighted(bool isHighlighted)
         {
-            if (block == this)
+            if (isHighlighted)
                 _meshRenderer.material.color = SELECTED_COLOR;
             else
                 _meshRenderer.material = _sharedMaterial;
-        }
-
-        void OnMouseOver()
-        {
-            if (Input.GetMouseButtonDown(1))
-            {
-                OnRightClickedGlobal.Invoke(this);
-            }
         }
 
         public void SetEnabled(bool shouldEnable)
